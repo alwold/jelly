@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN" "http://java.sun.com/j2ee/dtds/web-app_2_2.dtd">
+<web-app>
+ <servlet>
+  <servlet-name>Release</servlet-name>
+  <servlet-class>edu.asu.wmac.jelly.servlets.Release</servlet-class>
+ </servlet>
+ <servlet-mapping>
+  <servlet-name>Release</servlet-name>
+  <url-pattern>/Release</url-pattern>
+ </servlet-mapping>
+
+ <servlet>
+  <servlet-name>BuildChannel</servlet-name>
+  <servlet-class>edu.asu.wmac.jelly.servlets.BuildChannel</servlet-class>
+ </servlet>
+ <servlet-mapping>
+  <servlet-name>BuildChannel</servlet-name>
+  <url-pattern>/BuildChannel</url-pattern>
+ </servlet-mapping>
+
+ <servlet>
+  <servlet-name>ServerControl</servlet-name>
+  <servlet-class>edu.asu.wmac.jelly.servlets.ServerControl</servlet-class>
+ </servlet>
+ <servlet-mapping>
+  <servlet-name>ServerControl</servlet-name>
+  <url-pattern>/ServerControl</url-pattern>
+ </servlet-mapping>
+ 
+ <servlet>
+  <servlet-name>Jelly</servlet-name>
+  <servlet-class>edu.asu.wmac.jelly.servlets.Jelly</servlet-class>
+ </servlet>
+ 
+ <servlet-mapping>
+  <servlet-name>Jelly</servlet-name>
+  <url-pattern>/Jelly</url-pattern>
+ </servlet-mapping>
+
+ <servlet>
+  <servlet-name>Test</servlet-name>
+  <servlet-class>edu.asu.wmac.jelly.servlets.Test</servlet-class>
+ </servlet>
+ <servlet-mapping>
+  <servlet-name>Test</servlet-name>
+  <url-pattern>/Test</url-pattern>
+ </servlet-mapping>
+</web-app>
+

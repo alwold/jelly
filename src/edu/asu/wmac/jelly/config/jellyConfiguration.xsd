@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" jaxb:version="1.0">
+
+<xs:element name="jellyConfiguration">
+  <xs:complexType>
+     <xs:sequence>
+       <xs:element name="project" type="projectType" minOccurs="1" maxOccurs="unbounded" />
+       <xs:element name="serverFarm" minOccurs="1" maxOccurs="unbounded">
+          <xs:complexType>
+             <xs:sequence>
+               <xs:element name="server" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
+             </xs:sequence>
+          </xs:complexType>
+       </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+<xs:complexType name="projectType">
+  <xs:all>
+    <xs:element name="sourceConfiguration">
+      <xs:complexType>
+         <xs:sequence>
+           <xs:element name="driverClassName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+           <xs:element name="driverConfiguration" type="DriverConfigurationType" minOccurs="0" maxOccurs="1"/>
+         </xs:sequence>
+      </xs:complexType>
+    </xs:element>
+    <xs:element name="buildConfiguration">
+      <xs:complexType>
+         <xs:sequence>
+           <xs:element name="driverClassName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+           <xs:element name="driverConfiguration" type="DriverConfigurationType" minOccurs="0" maxOccurs="1"/>
+         </xs:sequence>
+      </xs:complexType>
+    </xs:element>
+    <xs:element name="deployConfiguration">
+      <xs:complexType>
+        <xs:all>
+          <xs:element name="driverClassName" type="xs:string"/>
+          <xs:element name="driverConfiguration" type="DriverConfigurationType"/>
+          <xs:element name="serverFarm">
+            <xs:complexType>
+              <xs:attribute name="env" type="xs:string" />
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="remoteLocation" type="xs:string"/>
+        </xs:all>
+      </xs:complexType>
+    </xs:element>
+  </xs:all>
+  <xs:attribute name="name" type="xs:string" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="DriverConfigurationType">
+   <xs:sequence>
+     <xs:element name="parameter" minOccurs="0" maxOccurs="unbounded" type="ParameterType"/>
+   </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="ParameterType">
+    <xs:simpleContent>
+     <xs:extension base="xs:string">
+       <xs:attribute name="name" type="xs:string" />
+     </xs:extension>
+   </xs:simpleContent>
+</xs:complexType> 
+
+
+
+</xs:schema>

@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+
+<jellyConfiguration>
+ 
+  <project name="uPortal">
+     <sourceConfiguration>
+         <driverClassName>edu.asu.wmac.jelly.source.CvsSource</driverClassName>
+     </sourceConfiguration>
+
+     <buildConfiguration>
+         <driverClassName>edu.asu.wmac.jelly.build.AntBuilder</driverClassName>
+    
+     </buildConfiguration>
+   
+     <deployConfiguration>
+         <driverClassName>edu.asu.wmac.jelly.deploy.RsyncDeployer</driverClassName>
+         <driverConfiguration>
+            <parameter name="rsync">/usr/bin/rsync</parameter>
+            <parameter name="ssh">/usr/bin/ssh</parameter>
+            <parameter name="sshUser">nsadmin</parameter>
+         </driverConfiguration>           
+         <serverFarm env="prod">uportal-prod</serverFarm>
+         <remoteLocation>/usr/local/tomcat/webapps/uPortal/</remoteLocation>
+     </deployConfiguration>     
+
+  </project>
+  
+  <project name="spamfilter">
+   <sourceConfiguration>
+    <driverClassName>edu.asu.wmac.jelly.source.CvsSource</driverClassName>
+   </sourceConfiguration>
+   <buildConfiguration>
+    <driverClassName>edu.asu.wmac.jelly.build.AntBuilder</driverClassName>
+   </buildConfiguration>
+   <deployConfiguration>
+    <driverClassName>edu.asu.wmac.jelly.deploy.RsyncDeployer</driverClassName>
+   </deployConfiguration>
+  </project>
+
+
+  <serverFarm name="uportal-prod">
+     <server>uportal10.xxx</server>
+     <server>uportal11.xxx</server>
+  </serverFarm>
+
+  <serverFarm name="develup">
+     <server>develup.xxx</server>
+  </serverFarm>
+  
+ 
+
+</jellyConfiguration>

@@ -1,0 +1,104 @@
+<!-- jelly project build file -->
+<project default="build">
+ <property name="build" value="../WEB-INF/classes"/>
+ <property name="lib" value="../WEB-INF/lib"/>
+ <property name="doc" value="/tmp/jellydoc" />
+ <property name="tomcat-lib" value="/usr/local/tomcat/common/lib"/>
+	
+<path id="classpath">
+  <pathelement location="${tomcat-lib}/servlet-api.jar"/>
+  <pathelement location="${lib}/webauth.jar"/>
+  <pathelement location="${lib}/cvslib36.jar"/>
+  <pathelement location="${lib}/jax-qname.jar"/>
+  <pathelement location="${lib}/jaxb-impl.jar"/>
+  <pathelement location="${lib}/jaxb-api.jar"/>
+  <pathelement location="${lib}/jaxb-libs.jar"/>
+  <pathelement location="${lib}/jaxb-xjc.jar"/>
+  <pathelement location="${lib}/namespace.jar"/>
+  <pathelement location="${lib}/j2ssh-core.jar"/>
+  <pathelement location="${lib}/relaxngDatatype.jar"/>
+  <pathelement location="${lib}/xsdlib.jar"/>
+  <pathelement location="${lib}/xercesImpl.jar"/>
+  <pathelement location="${lib}/dom.jar"/>
+ </path>
+ <property name="url" value="http://develup.inre.asu.edu/manager"/>
+<!--   for testing, maybe fix this later with the jars included
+ <taskdef name="deploy" classname="org.apache.catalina.ant.DeployTask"/>
+ <taskdef name="undeploy" classname="org.apache.catalina.ant.RemoveTask"/>
+ <taskdef name="reload" classname="org.apache.catalina.ant.ReloadTask"/>-->
+
+<taskdef name="xjc" classname="com.sun.tools.xjc.XJCTask">
+  <classpath>
+    <fileset dir="${lib}" includes="*.jar"/>
+  </classpath>
+</taskdef>
+	         
+		
+ <!-- Create the destination directory -->
+ <target name="prepare">
+
+  <echo>${tomcat-lib}</echo>
+  <tstamp/>
+  <mkdir dir="${build}"/>
+  <mkdir dir="${doc}"/>
+ </target>
+
+ <!-- Build class files and copy properties -->
+ <target name="build" depends="prepare,xjc">
+  <javac debug="on" srcdir="${basedir}" destdir="${build}">
+   <classpath refid="classpath"/>
+  </javac>
+  <antcall target="properties"/>
+ </target>
+
+ <!-- Remove the destination directory -->
+ <target name="clean">
+  <delete includeEmptyDirs="true">
+   <fileset dir="${build}" includes="**/*"/>
+  </delete>
+ </target>
+
+ <!-- Copy all the properties file to the destination tree -->
+ <target name="properties" depends="prepare">
+  <copy todir="${build}">
+   <fileset dir="${basedir}" includes="**/*.properties"/>
+   <fileset dir="${basedir}" includes="**/*.xsl"/>
+   <fileset dir="${basedir}" includes="**/*.xml"/>
+  </copy>
+ </target>
+
+ <!-- build war file -->
+ <target name="dist" depends="build">
+  <war warfile="${basedir}/../jelly.war" webxml="${basedir}/../WEB-INF/web.xml">
+   <fileset dir="${basedir}/../">
+   	<exclude name="jelly.war"/>
+   </fileset>
+   <classes dir="${build}"/>
+  </war>
+ </target>
+
+ <target name="localdeploy" depends="dist">
+  <copy file="${basedir}/../jelly.war" todir="/usr/local/tomcat/webapps"/>
+ </target>
+ 
+ <target name="xjc" >
+	<xjc schema="${basedir}/edu/asu/wmac/jelly/config/jellyConfiguration.xsd" 
+         target="${basedir}" package="edu.asu.wmac.jelly.config" />
+
+ </target>
+	
+	
+ <target name="deploy" depends="dist">
+  <input message="username" addproperty="username"/>
+  <input message="password" addproperty="password"/>
+  <undeploy path="/jelly" username="${username}" password="${password}" url="${url}"/>
+  <deploy path="/jelly" war="file:${basedir}/../jelly.war" username="${username}" password="${password}" url="${url}"/>
+  <reload path="/jelly" username="${username}" password="${password}" url="${url}"/>
+ </target>
+	
+ <!-- Generate javadocs 
+ <target name="javadoc" depends="prepare">
+  <javadoc packagenames="edu.asu.wmac.*" sourcepath="${basedir}" destdir="${doc}" classpath="${classpath}"
+           windowtitle="White pages Java API" doctitle="White pages Java API" serialwarn="false"/>
+ </target>  -->
+</project>
